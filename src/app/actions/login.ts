@@ -1,5 +1,6 @@
 import axios from "axios";
-import { z } from "zod";
+import { loginSchema } from "../libs/zod";
+import { axiosRequest } from "./axios";
 
 type FormState =
   | {
@@ -11,16 +12,6 @@ type FormState =
       message?: string;
     }
   | undefined;
-
-const loginUrl = process.env.BACKEND_URL_LOGIN || "";
-
-const loginSchema = z.object({
-  email: z.string({ message: "Email is required." }).email(),
-  password: z
-    .string({ message: "Password is required." })
-    .min(5, "Password should be at least 5 characteres long.")
-    .max(20, "Password should be max 20 characteres long."),
-});
 
 export async function handlerLoginAction(state: FormState, formData: FormData) {
   const email = formData.get("email") as string;
@@ -40,10 +31,7 @@ export async function handlerLoginAction(state: FormState, formData: FormData) {
 
   // Call backend api
   try {
-    return await axios.post(loginUrl, {
-      email,
-      password,
-    });
+    return axiosRequest.post({ email, password });
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       return { error: true, message: error.response.data.message };

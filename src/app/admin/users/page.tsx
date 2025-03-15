@@ -2,12 +2,11 @@
 
 import { useAppContext } from "@/store/global/global.provider"
 import { User } from "@/store/global/global.types"
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash } from "@fortawesome/free-solid-svg-icons"
+import { axiosRequest } from "@/app/actions/axios"
 
-const backendUrl = process.env.BACKEND_URL || ''
 
 type IUser = User & {
   id: number
@@ -19,13 +18,15 @@ export default function Users() {
   const [users, setUsers] = useState([])
 
   useEffect(() => {
-    axios.get(`${backendUrl}/users`)
-      .then((response) => {
-        setUsers(response.data.response)
-      })
-      .catch(() => {
+    const fetchData = async () => {
+      const data = await axiosRequest.get()
+      if (data.error) {
         handlerNotification(true, 'Error when retieve data.')
-      })
+        return
+      }
+      setUsers(data.res?.data.response)
+   }
+   fetchData()
   }, [handlerNotification])
 
   return (
