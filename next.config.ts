@@ -32,6 +32,7 @@ const nextConfig: NextConfig = {
   env: {
     BACKEND_URL_LOGIN: process.env.BACKEND_URL_LOGIN,
     BACKEND_URL: process.env.BACKEND_URL,
+    GRAPHQL_URL: process.env.GRAPHQL_URL,
   },
 };
 

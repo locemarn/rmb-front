@@ -23,7 +23,7 @@ export default function Login() {
 
   useEffect(() => {
     if (state && 'error' in state && state.error) {
-      handlerNotification(true, 'Error to fetching Login.')
+      handlerNotification(true, 'Error to fetching Login.', 'is-danger')
     }
     if (state && 'status' in state && state.status === 200) {
       handlerLogin({

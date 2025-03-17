@@ -8,8 +8,9 @@ import { AppContext } from "./global.state"
 const INITIAL_STATE = {
   user: null,
   notification: {
-  isVisible: false,
-  message: ''
+    isVisible: false,
+    message: '',
+    notificationType: "is-success" as "is-success" | "is-info" | "is-warning" | "is-danger"
   }
 }
 
@@ -48,10 +49,11 @@ export const AppProvider: React.FC<Props> = ({
     return state.user
   }, [state.user])
 
-  const handlerNotification = useCallback((isVisible: boolean, message: string) => {
+  const handlerNotification = useCallback((isVisible: boolean, message: string, notificationType: "is-info" | "is-success" | "is-warning" | "is-danger") => {
+    const notType = notificationType ?? "is-success"
     dispatch({
       type: isVisible ? 'SHOW_NOTIFICATION' : 'HIDE_NOTIFICATION',
-      payload: message
+      payload: {message, notificationType: notType},
     })
   }, [])
 

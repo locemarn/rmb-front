@@ -8,6 +8,7 @@ export type User = {
 export type Notification = {
   isVisible: boolean;
   message: string;
+  notificationType: "is-info" | "is-success" | "is-warning" | "is-danger";
 };
 
 export type Context = {
@@ -15,7 +16,11 @@ export type Context = {
   handlerLogin: (user: User) => void;
   handlerLogout: () => void;
   getUser: () => User | null;
-  handlerNotification: (isVisible: boolean, message: string) => void;
+  handlerNotification: (
+    isVisible: boolean,
+    message: string,
+    notificationType: "is-info" | "is-success" | "is-warning" | "is-danger"
+  ) => void;
   getNotification: () => Notification;
 };
 
@@ -26,7 +31,13 @@ export type Props = {
 export type Action =
   | { type: "LOGIN"; payload: User | null }
   | { type: "LOGOUT" }
-  | { type: "SHOW_NOTIFICATION"; payload: string }
+  | {
+      type: "SHOW_NOTIFICATION";
+      payload: {
+        message: string;
+        notificationType: "is-info" | "is-success" | "is-warning" | "is-danger";
+      };
+    }
   | { type: "HIDE_NOTIFICATION" }
   | { type: "GET_USER_DATA" };
 // export type Dispatch = (action: Action) => void

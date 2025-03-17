@@ -22,7 +22,8 @@ export function contextReducer(state: State, action: Action): State {
         ...state,
         notification: {
           isVisible: true,
-          message: action.payload,
+          message: action.payload.message,
+          notificationType: action.payload.notificationType 
         },
       };
     case 'HIDE_NOTIFICATION':
@@ -31,6 +32,7 @@ export function contextReducer(state: State, action: Action): State {
         notification: {
           isVisible: false,
           message: '',
+          notificationType: 'is-success'
         },
       };
     default:
