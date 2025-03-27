@@ -5,6 +5,7 @@ import { AppProvider } from "@/store/global/global.provider";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import ReactQueryProviders from "./libs/react-query-providers";
 import NavbarComponent from "@/components/Navbar";
+import FooterComponent from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,7 +40,10 @@ export default function RootLayout({
           <ReactQueryProviders>
             <AppProvider>
               <NavbarComponent />
-              {children}
+              <section className="container">
+                {children}
+              </section>
+              <FooterComponent />
             </AppProvider>
           </ReactQueryProviders>
         </body>

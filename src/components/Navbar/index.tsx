@@ -35,16 +35,33 @@ export default function NavbarComponent() {
       <div className="columns is-vcentered">
         <div className="column is-full">
           <div className="tabs">
-            <ul className="column is-three-quarters">
-              <li className={activeRouter === "/admin/main" ? 'is-active': ''}><Link href="/admin/main">Main</Link></li>
-              <li className={activeRouter === "/admin/users" ? 'is-active': ''}><Link href="/admin/users" onClick={handlerActive}>Users</Link></li>
-            </ul>
-            <ul className="column is-one-quarter">
-              <div className="columns">
-                <li className="column has-text-info mt-2">Hello, {user?.username}</li>
-                <li className="column"><button className="button" onClick={handlerSetUserOff}>Logout</button></li>
-              </div>
-            </ul>
+            {user ? (
+              <>
+                <ul className="column is-three-quarters">
+                  <li className={activeRouter === "/admin/main" ? 'is-active': ''}><Link href="/admin/main">Main</Link></li>
+                  <li className={activeRouter === "/admin/users" ? 'is-active': ''}><Link href="/admin/users" onClick={handlerActive}>Users</Link></li>
+                </ul>
+                <ul className="column is-one-quarter">
+                  <div className="columns">
+                    <li className="column has-text-info mt-2">Hello, {user?.username}</li>
+                    <li className="column"><button className="button" onClick={handlerSetUserOff}>Logout</button></li>
+                  </div>
+                </ul>
+              </>
+            ) : (
+              <>
+                <ul className="column is-three-quarters">
+                  <li className={activeRouter === "/" ? 'is-active': ''}><Link href="/admin/main">Home</Link></li>
+                  
+                </ul>
+                <ul className="column is-one-quarter">
+                  <div className="columns">
+                    <li className="column"><button className="button"><Link href="/login">Login</Link></button></li>
+                  </div>
+                </ul>
+              </>
+            )}
+            
           </div>
         </div>
       </div>
