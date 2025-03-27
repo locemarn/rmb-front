@@ -14,9 +14,9 @@ export default function NavbarComponent() {
   const pathname = usePathname()
 
   
-  useEffect(() => {
-    if (!user) redirect('/login')
-  }, [user])
+  // useEffect(() => {
+  //   if (!user) redirect('/login')
+  // }, [user])
 
   function handlerSetUserOff(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
@@ -51,18 +51,3 @@ export default function NavbarComponent() {
     </>
   )
 }
-
-{/* <ul>
-            <li className={activeRouter === "/admin/main" ? 'is-active': ''}><Link href="/admin/main">Main</Link></li>
-            <li className={activeRouter === "/admin/users" ? 'is-active': ''}><Link href="/admin/users" onClick={handlerActive}>Users</Link></li>
-            <li><Link href="/admin/main">Videos</Link></li>
-            <li><Link href="/admin/main">Documents</Link></li>
-            <span className="has-text-right">
-              <li>
-                <span className="is-size-6">Hello, {user?.username}!</span>
-              </li>
-              <li>
-                <button className="button">Logout</button>
-              </li>
-            </span>
-          </ul> */}

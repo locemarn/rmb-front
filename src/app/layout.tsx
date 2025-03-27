@@ -4,6 +4,7 @@ import "./globals.css";
 import { AppProvider } from "@/store/global/global.provider";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import ReactQueryProviders from "./libs/react-query-providers";
+import NavbarComponent from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,14 +27,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ReactQueryProviders>
-          <AppProvider>
-            {children}
-          </AppProvider>
-        </ReactQueryProviders>
-      </body>
-    </html>
+    <>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/animate.css@4.0.0/animate.min.css"
+        />
+      </head>
+      <html lang="en">
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <ReactQueryProviders>
+            <AppProvider>
+              <NavbarComponent />
+              {children}
+            </AppProvider>
+          </ReactQueryProviders>
+        </body>
+      </html>
+    </>
   );
 }

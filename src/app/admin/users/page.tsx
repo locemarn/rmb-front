@@ -10,6 +10,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons"
 import { useQuery, useMutation } from "@tanstack/react-query"
 import SkeletonComponent from "@/components/Skeleton"
 import { graphqlRequests } from "@/app/api/actions"
+import { toast } from "bulma-toast"
 
 type IUseQueryRespose = {
   isLoading: boolean,
@@ -32,20 +33,37 @@ export default function Users() {
 
   const { isLoading: isLoadingGetAllUsers, error: errorGetAllUsers, data: dataGetAllUsers, refetch: refetchGetAllUsers }: IUseQueryRespose = useQuery({
     queryKey: ['getUsers'],
-    queryFn: async () => await graphqlRequests.getAllUsers()
+    queryFn: async () => await graphqlRequests.getAllUsers(),
   })
 
 
   const { mutate: deleteUserMutation, isPending: deleteUserPending, error: deleteUserError } = useMutation({
+    mutationKey: ['deleteUser'],
     mutationFn: async (id: number) => await graphqlRequests.deleteUser(id),
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
     onSuccess: () => {
       // Refetch users after a successful delete
       refetchGetAllUsers();
-      handlerNotification(true, 'User deleted with success.', 'is-success');
+      handlerNotification(true, 'User deleted successfully', 'is-success');
+      toast({
+        message: 'User deleted successfully.',
+        type: 'is-success',
+        dismissible: true,
+        pauseOnHover: true,
+        animate: { in: 'fadeIn', out: 'fadeOut' },
+      })
     },
     onError: (error) => {
       console.log(error);
-      handlerNotification(true, 'Error when deleting user.', 'is-danger');
+      // handlerNotification(true, 'Error when deleting user.', 'is-danger');
+      toast({
+        message: 'Error when deleting user.',
+        type: 'is-danger',
+        dismissible: true,
+        pauseOnHover: true,
+        animate: { in: 'fadeIn', out: 'fadeOut' },
+      })
     }
   })
 

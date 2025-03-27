@@ -18,6 +18,7 @@
     "@tanstack/react-query-next-experimental": "^5.68.0",
     "axios": "^1.8.2",
     "bulma": "^1.0.3",
+    "bulma-toast": "^2.4.4",
     "graphql-request": "^7.1.2",
     "next": "15.2.1",
     "react": "^19.0.0",
