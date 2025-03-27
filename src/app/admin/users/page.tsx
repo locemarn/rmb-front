@@ -2,34 +2,22 @@
 'use client'
 
 import { useAppContext } from "@/store/global/global.provider"
-import { User } from "@/store/global/global.types"
 import { useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash } from "@fortawesome/free-solid-svg-icons"
-// import { axiosRequest } from "@/app/actions/axios"
 import { useQuery, useMutation } from "@tanstack/react-query"
 import SkeletonComponent from "@/components/Skeleton"
 import { graphqlRequests } from "@/app/api/actions"
 import { toast } from "bulma-toast"
+import { IUseQueryRespose, IUser } from "@/app/utils/types"
 
-type IUseQueryRespose = {
-  isLoading: boolean,
-  error: any,
-  refetch: any
-  data: {
-    getUsers: IUser[] | undefined,
-  } | undefined
-  isFetching: boolean
-}
 
-type IUser = User & {
-  id: number
-}
 
 export default function Users() {
   const {handlerNotification} = useAppContext()
 
   const [users, setUsers] = useState<IUser[]>([])
+  const [sessionUser, setSessionUser] = useState<IUser | null>(null)
 
   const { isLoading: isLoadingGetAllUsers, error: errorGetAllUsers, data: dataGetAllUsers, refetch: refetchGetAllUsers }: IUseQueryRespose = useQuery({
     queryKey: ['getUsers'],
@@ -37,7 +25,7 @@ export default function Users() {
   })
 
 
-  const { mutate: deleteUserMutation, isPending: deleteUserPending, error: deleteUserError } = useMutation({
+  const { mutate: deleteUserMutation, isPending: deleteUserPending } = useMutation({
     mutationKey: ['deleteUser'],
     mutationFn: async (id: number) => await graphqlRequests.deleteUser(id),
     retry: 3,
@@ -56,7 +44,6 @@ export default function Users() {
     },
     onError: (error) => {
       console.log(error);
-      // handlerNotification(true, 'Error when deleting user.', 'is-danger');
       toast({
         message: 'Error when deleting user.',
         type: 'is-danger',
@@ -68,26 +55,13 @@ export default function Users() {
   })
 
   useEffect(() => {
-    if (dataGetAllUsers) setUsers(dataGetAllUsers.getUsers as IUser[])
+    if (dataGetAllUsers) setUsers(dataGetAllUsers.users as IUser[])
+    const sessUser = window.sessionStorage.getItem("user");
+    if (sessUser) setSessionUser(JSON.parse(sessUser) as IUser);
   }, [dataGetAllUsers])
 
   if (isLoadingGetAllUsers) return <SkeletonComponent />
-  if (errorGetAllUsers || deleteUserError) handlerNotification(true, 'Error when resqueting data.', 'is-danger')
-
-
-  // get data from axios request
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = await axiosRequest.get()
-  //     if (data.error) {
-  //       handlerNotification(true, 'Error when retieve data.')
-  //       return
-  // async function handlerDeleteUser(id: number) {
-  //   deleteUserRefetch(id)
-  // }
-    
-    
-
+  if (errorGetAllUsers) handlerNotification(true, 'Error when resqueting data.', 'is-danger')
 
   return (
     <table className="table is-fullwidth">
@@ -100,7 +74,6 @@ export default function Users() {
           <th className="is-info"><abbr title="Actions">Actions</abbr></th>
         </tr>
       </thead>
-      
       <tbody>
         {users.map((user: IUser) => (
           <tr key={user.id}>
@@ -109,9 +82,12 @@ export default function Users() {
             <td>{user.email}</td>
             <td>{user.role}</td>
             <td>
-            {/* is-skeleton */}
               <span className="icon has-text-danger">
-                <button className={`${deleteUserPending && 'is-skeleton'} button is-small is-danger is-outlined`} onClick={() => deleteUserMutation(+user.id)}>
+                <button
+                  className={`${deleteUserPending && 'is-skeleton'} button is-small is-danger is-outlined`}
+                  onClick={() => deleteUserMutation(user.id)}
+                  disabled={(sessionUser?.role !== 'admin' || sessionUser?.email === user.email)}
+                >
                   <span className="icon is-small">
                     <FontAwesomeIcon style={{}} icon={faTrash}></FontAwesomeIcon>
                   </span>

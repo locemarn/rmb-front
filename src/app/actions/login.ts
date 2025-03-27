@@ -1,17 +1,9 @@
 import axios from "axios";
 import { loginSchema } from "../libs/zod";
 import { axiosRequest } from "./axios";
+import { FormState } from "../utils/types";
 
-type FormState =
-  | {
-      errors?: {
-        name?: string[];
-        email?: string[];
-        password?: string[];
-      };
-      message?: string;
-    }
-  | undefined;
+
 
 export async function handlerLoginAction(state: FormState, formData: FormData) {
   const email = formData.get("email") as string;

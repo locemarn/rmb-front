@@ -15,7 +15,7 @@ export default function Login() {
 
   useEffect(() => {
     const hasUser = getUser()
-    if (hasUser) redirect('/admin/main')
+    if (hasUser) redirect('/')
   }, [getUser])
 
   return (

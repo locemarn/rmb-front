@@ -9,11 +9,9 @@ export default function PostCard({post}: {post: IPost}) {
     <div className="card">
       <header className="card-header">
         <p className="card-header-title">{post.title}</p>
-        <button className="card-header-icon" aria-label="more options">
-          <span className="icon">
-            <i className="fas fa-angle-down" aria-hidden="true"></i>
-          </span>
-        </button>
+        <p className='mt-2 mr-5'>
+          Author: <a href={`mailto:${post.user.email}`}>{post.user.username}</a>
+        </p>
       </header>
       <div className="card-content">
         <div className="content">

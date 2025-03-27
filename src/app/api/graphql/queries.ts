@@ -2,38 +2,37 @@ import { gql } from "graphql-request";
 
 export const userQueries = {
   getUsersQuery: gql`
-    {
-      getUsers {
+    query GetUsers {
+      users {
         id
         username
         email
+        role
       }
     }
   `,
 
   deleteUser: gql`
-    mutation DeleteUser($id: Int) {
+    mutation DeleteUser($id: ID!) {
       deleteUser(id: $id) {
-        id
-        username
-        email
-        created_at
-        updated_at
+          id
+          username
+          email
       }
     }
   `,
 
   registerUserMutation: gql`
     mutation CreateUser($username: String! $password: String! $email: String! $role: UserRole!) {
-    createUser(username: $username email: $email password: $password role: $role) {
-        id
-        username
-        email
-        role
-        created_at
-        updated_at
+      createUser(username: $username email: $email password: $password role: $role) {
+          id
+          username
+          email
+          role
+          created_at
+          updated_at
+      }
     }
-}
   `,
 
   

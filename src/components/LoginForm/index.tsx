@@ -24,7 +24,7 @@ export default function LoginForm() {
           role: state.data.user.role,
           token: state.data.token,
         })
-        router.push('/admin/main')
+        router.push('/')
       }
     }, [state, handlerLogin, router, handlerNotification])
   
