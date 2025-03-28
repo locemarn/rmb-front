@@ -15,6 +15,15 @@ export type IPost = {
   categories: Array<{
     name: string
     id: number
+  }>,
+  comments: Array<{
+    response: any
+    created_at: string | undefined
+    id: number,
+    content: string,
+    user: {
+      username: string
+    }
   }>
 }
 

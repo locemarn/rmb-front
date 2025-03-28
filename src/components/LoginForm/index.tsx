@@ -19,6 +19,7 @@ export default function LoginForm() {
       }
       if (state && 'status' in state && state.status === 200) {
         handlerLogin({
+          id: state.data.user.id,
           username: state.data.user.username,
           email: state.data.user.email,
           role: state.data.user.role,

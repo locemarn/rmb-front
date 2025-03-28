@@ -52,6 +52,10 @@ export const postQueries = {
           username
           email
         }
+        likes {
+          postId
+          userId
+        }
         categories {
           id
           name
@@ -61,6 +65,75 @@ export const postQueries = {
         }
       }
     }
-
   `,
+
+  getPostById: gql`
+    mutation GetPostById($id: ID!) {
+      getPostById(id: $id) {
+          id
+          title
+          content
+          created_at
+          user {
+              username
+              email
+          }
+          categories {
+              id
+              name
+          }
+          comments {
+              id
+              content
+              created_at
+              user {
+                username
+              }
+              likes {
+                postId
+                userId
+              }
+              response {
+                  id
+                  content
+                  created_at
+                  user {
+                    username
+                  }
+              }
+          }
+          
+      }
+  }
+  `,
+
+  getUserLikes: gql`
+    mutation GetUserLikes($userId: ID!) {
+      getUserLikes(userId: $userId) {
+        id
+        postId
+        userId
+      }
+    }
+  `,
+
+  addLike: gql`
+    mutation AddLike($postId: ID!, $userId: ID!) {
+      addLike(postId: $postId, userId: $userId) {
+        id
+        postId
+        userId
+      }
+    }
+  `,
+
+  removeLike: gql`
+    mutation RemoveLike($postId: ID! $userId: ID!) {
+      removeLike(postId: $postId userId: $userId) {
+        id
+        postId
+        userId
+      }
+    }
+  `
 }

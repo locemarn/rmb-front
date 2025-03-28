@@ -23,7 +23,7 @@ export const AppProvider: React.FC<Props> = ({
     const userStorage = sessionStorage.getItem('user')
     if (userStorage) {
       dispatch({
-        type: 'LOGIN', 
+        type: 'LOGIN',
         payload: {...JSON.parse(userStorage)}
       })
     }
